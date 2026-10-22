@@ -1,0 +1,53 @@
+# BROKEN on purpose: the edge answers anyone. See README, "The open door".
+# Run from the repo root: docker compose -f deploy/docker-compose.yml up --build
+services:
+  portfolio-api:
+    build: { context: .., dockerfile: deploy/Dockerfile }
+    command: uvicorn portfolio_api.app:app_from_env --factory --host 0.0.0.0 --port 8210
+    networks: [backplane]
+
+  advisor:
+    build: { context: .., dockerfile: deploy/Dockerfile }
+    command: uvicorn server.app:app_from_env --factory --host 0.0.0.0 --port 8102
+    environment:
+      AGENT_VERSION: v2
+      LLM_FAKE: "1"
+      PORTFOLIO_API_URL: http://portfolio-api:8210
+      ADVISOR_DEBUG: "1"   # dev console, left on from early testing
+    depends_on: [portfolio-api]
+    networks: [backplane]
+
+  web-gateway:
+    build: { context: .., dockerfile: deploy/Dockerfile }
+    command: uvicorn gateway.app:app_from_env --factory --host 0.0.0.0 --port 8080
+    environment:
+      DEMO_TOKEN: ${DEMO_TOKEN:-demo-token}
+      ADVISOR_URL: http://advisor:8102
+    ports: ["8080:8080"]
+    depends_on: [advisor]
+    networks: [backplane, front]   # front: only for the published :8080
+
+  edge:
+    image: nginx:1.27-alpine
+    entrypoint: ["/bin/sh", "/start-edge.sh"]
+    volumes:
+      - ./edge/start-edge.sh:/start-edge.sh:ro
+    environment:
+      EDGE_ACCESS: internal   # the intent: only the backplane may call the advisor
+      UPSTREAM: advisor:8102
+      INTERNAL_CIDR: 10.77.0.0/24
+    ports: ["8088:80"]
+    depends_on: [advisor]
+    # public: where the published port arrives; backplane: where the advisor lives.
+    networks:
+      public: {}
+      backplane: {}
+
+networks:
+  backplane:
+    internal: true   # no route to the host: published ports can only arrive via `public`
+    ipam:
+      config:
+        - subnet: 10.77.0.0/24
+  front: {}
+  public: {}

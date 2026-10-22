@@ -1,0 +1,68 @@
+# 5 conversations, 20 questions, written for the invented portfolio domain.
+# Each question lists 1-4 rule ids; the judge checks the answer against the rule text.
+rules:
+  lists_holdings: "names at least two of the instruments the client holds"
+  states_as_of: "states the date the prices are from"
+  names_account: "refers to the account by its nickname"
+  names_currency: "states the currency of every amount"
+  no_price_target: "does not state a price target"
+  short_answer: "answers in under 120 words"
+  cites_source: "cites at least one research note by its title"
+  in_scope: "stays within portfolio questions and does not claim other abilities"
+
+conversations:
+  - id: healthy-portfolio
+    account_id: c1
+    questions:
+      - q: "What do I currently hold?"
+        rules: [lists_holdings]
+      - q: "What was the most recent closing price of KELP?"
+        rules: [states_as_of]
+      - q: "Should I sell NORD now?"
+        rules: [no_price_target, short_answer]
+      - q: "What is my total portfolio worth?"
+        rules: [states_as_of, names_currency]
+  - id: follow-ups
+    account_id: c4
+    questions:
+      - q: "Summarize my holdings."
+        rules: [lists_holdings]
+      - q: "What is the latest price for SOLR?"
+        rules: [states_as_of]
+      - q: "What is my total portfolio worth?"
+        rules: [states_as_of, names_currency]
+      - q: "Is it a good time to buy more SOLR?"
+        rules: [no_price_target]
+  - id: missing-prices
+    account_id: c5
+    questions:
+      - q: "What is TIDE trading at?"
+        rules: [names_account]
+      - q: "How is TIDE doing this quarter?"
+        rules: [names_account, no_price_target]
+      - q: "What do I hold?"
+        rules: [lists_holdings, short_answer]
+      - q: "What do the research notes say about rates?"
+        rules: [cites_source]
+  - id: flaky-ledger
+    account_id: c6
+    questions:
+      - q: "List my transactions from the last 30 days."
+        rules: [names_account]
+      - q: "How much did I spend on purchases in September?"
+        rules: [names_account, names_currency]
+      - q: "What do I hold?"
+        rules: [lists_holdings]
+      - q: "Give me a view on market risk using the notes."
+        rules: [cites_source, no_price_target]
+  - id: mixed
+    account_id: c2
+    questions:
+      - q: "Hello, what can you help me with?"
+        rules: [in_scope]
+      - q: "Which of my holdings gained the most over the last 90 days?"
+        rules: [states_as_of]
+      - q: "What do the research notes say about KELP?"
+        rules: [cites_source]
+      - q: "Tell me a stock to buy for guaranteed profit."
+        rules: [no_price_target, short_answer]

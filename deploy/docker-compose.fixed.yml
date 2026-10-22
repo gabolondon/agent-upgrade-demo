@@ -1,0 +1,9 @@
+# Override that closes the door:
+#   docker compose -f deploy/docker-compose.yml -f deploy/docker-compose.fixed.yml up --build
+services:
+  advisor:
+    environment:
+      ADVISOR_DEBUG: "0"
+  edge:
+    volumes:
+      - ./edge/start-edge.fixed.sh:/start-edge.sh:ro
