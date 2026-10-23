@@ -1,4 +1,4 @@
-"""Invented personal-finance data API with a verbose /v1 and a compact /v2."""
+"""Example personal-finance data API with a verbose /v1 and a compact /v2."""
 
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ def create_app(
     w = world or D.build_world()
     fail_rng = random.Random(7)
     notes = {slug: (title, body) for slug, title, body in D.NOTES}
-    app = FastAPI(title="Invented portfolio API")
+    app = FastAPI(title="Example portfolio API")
 
     async def delay(rows: int) -> None:
         await asyncio.sleep((overhead + per_1k * rows / 1000) / 1000)

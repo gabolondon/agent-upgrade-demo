@@ -1,4 +1,4 @@
-"""Seeded, invented portfolio data. Nothing here comes from a real system."""
+"""Seeded example portfolio data. Nothing here comes from a real system."""
 
 from __future__ import annotations
 

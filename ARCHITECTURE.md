@@ -1,6 +1,6 @@
 # Architecture
 
-Components: `portfolio_api/` (invented data, `/v1` verbose and `/v2` compact), `agent_v1/`,
+Components: `portfolio_api/` (example data, `/v1` verbose and `/v2` compact), `agent_v1/`,
 `agent_v2/`, `server/` (FastAPI, `/ask` and `/briefing`), `client/` (rich CLI), `bench/`.
 
 ## Data API

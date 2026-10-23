@@ -31,7 +31,7 @@ def env_bool(name: str, default: bool) -> bool:
 
 
 def demo_today() -> date:
-    """The 'today' of the invented world (fixed so the data and benchmark are reproducible)."""
+    """The 'today' of the example data (fixed so the data and benchmark are reproducible)."""
     return date.fromisoformat(os.environ.get("REFERENCE_DATE", "2026-09-30"))
 
 

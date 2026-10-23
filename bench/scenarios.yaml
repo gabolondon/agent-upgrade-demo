@@ -1,4 +1,4 @@
-# 5 conversations, 20 questions, written for the invented portfolio domain.
+# 5 conversations, 20 questions, written for the example portfolio domain.
 # Each question lists 1-4 rule ids; the judge checks the answer against the rule text.
 rules:
   lists_holdings: "names at least two of the instruments the client holds"

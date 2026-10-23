@@ -1,11 +1,11 @@
 # agent-upgrade-demo
 
 Run a slow LLM agent and an upgraded one side by side, then measure each improvement with a
-benchmark and an LLM judge. The domain is an invented personal-finance portfolio app: the assistant
+benchmark and an LLM judge. The example domain is a personal-finance portfolio app: the assistant
 answers a client's questions and opens every chat with a short report.
 
-> Disclaimer: a from-scratch rebuild of a pattern on an invented domain; not anyone's production
-> code. All names, data, rules and prices are made up.
+> This is example code: it shows the pattern I used, not the production implementation.
+> Names, data, rules and prices are example values.
 
 - **v1, the slow one**: planner -> pool of specialist sub-agents (fetch via verbose `/v1`, write prose
   briefs) -> writer. Opening report regenerated on every open. No streaming.
@@ -95,8 +95,8 @@ The compose file says the advisor is internal-only (`EDGE_ACCESS: internal`, not
 edge's start script silently opens it anyway: a legacy "temporary: open for early testing" block,
 on by default, writes `allow all;` before the restrictive rule, and nginx takes the first match, so
 the internal-only rule is dead code. Nothing logs it. Behind the edge, a dev console calls the
-LLM with no token. Everything here is invented and runs in fake LLM mode; it is not how any real
-system was configured.
+LLM with no token. Everything here is example code and runs in fake LLM mode; it shows the pattern, not how any
+real system was configured.
 
 ```text
 $ docker compose -f deploy/docker-compose.yml config | grep EDGE_ACCESS            # closed
